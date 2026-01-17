@@ -1,0 +1,56 @@
+@startuml deposit_online_mvp_containers
+
+' Initial settings:
+
+title Standard bank deposit online MVP containers
+
+top to bottom direction
+
+!include ../lib/C4_Container.puml
+
+
+' Actors & components:
+
+Person(new_online_client, "New online client", "New online client")
+Person(online_client, "Authorized online client", "Registered online client")
+Person(phone_client, "Telephone client", "Telephone client")
+
+Container_Boundary(bank, "Standard bank") {
+    Container(site, "Website (PHP & React)", "REST API")
+    Container(on_bank, "Online banking system", ".Net & MS SQL")
+    Container(call_center, "Bank call center system", "REST API")
+    Container(dep_serv, "Deposit service", "Java/C# & React & Oracle/MS SQL")
+    Container(abs, "Auto banking system", "Delphi & Oracle")
+    Container(sms_gate, "Sms gate", "REST API")
+
+    Person(dep_mngr, "Deposit manager", "Back office")
+    Person(call_center_op, "Call center operator", "Call center operator")
+}
+
+System_Ext(tele_operator, "Telecom operator", "Communication service provider")
+
+
+' Relations:
+Rel(new_online_client, site, "HTTPS: deposit request")
+Rel(site, dep_serv, "New online client deposit req")
+Rel(dep_serv, dep_mngr, "New online client deposit req")
+Rel(dep_mngr, dep_serv, "Save deposit rates")
+Rel(dep_mngr, call_center, "Task: to call new client back")
+Rel(abs, dep_mngr, "Get rates data")
+Rel(call_center, call_center_op, "Task: to call new client back")
+Rel(call_center_op, new_online_client, "Confirmation call with an invitation to the bank")
+
+Rel(online_client, on_bank, "HTTPS: deposit request")
+Rel(on_bank, dep_serv, "Online client deposit req")
+Rel(on_bank, sms_gate, "SMS operation confirmation")
+Rel(dep_mngr, dep_serv, "Deposit req approvement")
+Rel(dep_serv, sms_gate, "SMS deposit approved")
+
+Rel(sms_gate, tele_operator, "SMS")
+Rel(tele_operator, online_client, "SMS")
+
+Rel(phone_client, call_center_op, "Deposit request")
+Rel(call_center_op, call_center, "Phone client deposit request")
+Rel(call_center_op, dep_serv, "Deposit request")
+
+@enduml

@@ -1,0 +1,37 @@
+@startuml deposit_online_mvp_context
+
+' Initial settings:
+
+title Standard bank deposit online MVP context
+
+top to bottom direction
+
+!include ./lib/C4_Context.puml
+
+
+' Actors & components:
+
+Person(new_online_client, "New online client", "New online client")
+Person(online_client, "Authorized online client", "Registered online client")
+Person(phone_client, "Telephone client", "Telephone client")
+
+System(bank, "Standard bank", "Standard bank")
+
+System_Ext(tele_operator, "Telecom operator", "Communication service provider")
+
+
+' Relations:
+
+Rel(new_online_client, bank, "HTTPS: deposit request (phone number, full name)")
+Rel(bank, new_online_client, "Confirmation call with an invitation to the bank")
+
+Rel(online_client, bank, "HTTPS: deposit request")
+Rel(bank, tele_operator, "SMS operation confirmation")
+Rel(tele_operator, online_client, "SMS operation confirmation")
+Rel(bank, tele_operator, "SMS success notification")
+Rel(tele_operator, online_client, "SMS success notification")
+
+Rel(phone_client, bank, "Deposit request")
+Rel(tele_operator, phone_client, "SMS operation confirmation")
+
+@enduml
