@@ -1,0 +1,30 @@
+@startuml  deposit_rates_to_call_center_context
+
+' Initial settings:
+
+title Standard bank deposit rates passing to the call centers (context)
+
+top to bottom direction
+
+!include ./lib/C4_Context.puml
+
+
+' Actors & components:
+
+Person(phone_client, "Telephone client", "Telephone client")
+Person(partner_op, "Partner call center operator", "Partner call center operator")
+
+System(bank, "Standard bank", "Standard bank")
+System_Ext(partner_call_center_system, "Partner call center system", "Java & Postgresql")
+
+
+' Relations:
+
+Rel(phone_client, bank, "Deposit request")
+
+Rel(phone_client, partner_op, "Deposit request")
+Rel(partner_op, partner_call_center_system, "Deposit rates")
+Rel(partner_call_center_system, bank, "Deposit rates files")
+
+
+@enduml

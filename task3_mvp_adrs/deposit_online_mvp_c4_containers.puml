@@ -51,6 +51,6 @@ Rel(tele_operator, online_client, "SMS")
 
 Rel(phone_client, call_center_op, "Deposit request")
 Rel(call_center_op, call_center, "Phone client deposit request")
-Rel(call_center_op, dep_serv, "Deposit request")
+Rel(call_center, dep_serv, "Deposit request")
 
 @enduml
