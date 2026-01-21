@@ -1,0 +1,58 @@
+@startuml credit_online_containers
+
+' Initial settings:
+
+title Standard bank credit online containers
+
+top to bottom direction
+
+!include ../lib/C4_Container.puml
+
+
+' Actors & components:
+
+Person(new_online_client, "New online client")
+Person(online_client, "Authorized online client")
+Person(offline_client, "Offline client", "New or old")
+
+Container_Boundary(bank, "Standard bank") {
+    Container(site, "Website (PHP & React)", "REST API")
+    Container(on_bank, "Online banking system", ".Net & MS SQL")
+    Container(credit_service, "Credit service", "Java/C# & React & Oracle/MS SQL")
+    Container(abs, "Auto banking system", "Delphi & Oracle")
+    Container(credit_pipeline, "Credit pipeline", "Camunda(Java) & Oracle")
+    Container(credit_scoring, "Credit scoring", "Python(Flask) & Postgresql")
+    Container(sms_gate, "Sms gate", "REST API")
+
+    Person(credit_manager, "Credit manager", "Back office")
+    Person(office_manager, "Office manager", "Front office")
+}
+
+System_Ext(tele_operator, "Telecom operator", "Communication service provider")
+System_Ext(credit_history, "Credit history bureau", "Communication service provider")
+
+
+' Relations:
+
+Rel(new_online_client, site, "HTTPS: credit request")
+Rel(site, credit_service, "Credit request")
+Rel(site, credit_service, "Get current credit rates")
+Rel(tele_operator, new_online_client, "SMS invitation to the bank")
+
+Rel(credit_manager, credit_service, "Process credit requests")
+Rel(credit_service, abs, "Get client credit data")
+Rel(credit_service, credit_pipeline, "Get client credit data")
+Rel(credit_service, credit_scoring, "Get client credit index")
+Rel(credit_pipeline, credit_history, "Get client ext credit history")
+
+Rel(offline_client, office_manager, "Credit request")
+Rel(office_manager, credit_service, "Credit request")
+
+Rel(online_client, on_bank, "Credit request")
+Rel(on_bank, credit_service, "Credit request")
+Rel(on_bank, credit_service, "Get current personal rates")
+
+Rel(credit_service, sms_gate, "SMS")
+Rel(sms_gate, tele_operator, "SMS")
+
+@enduml

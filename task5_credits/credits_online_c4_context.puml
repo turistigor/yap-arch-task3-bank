@@ -1,0 +1,38 @@
+@startuml credit_online_context
+
+' Initial settings:
+
+title Standard bank credit online context
+
+top to bottom direction
+
+!include ./lib/C4_Context.puml
+
+
+' Actors & components:
+
+Person(new_online_client, "New online client")
+Person(online_client, "Authorized online client")
+Person(offline_client, "Offline client", "New or old")
+
+System(bank, "Standard bank")
+
+System_Ext(tele_operator, "Telecom operator", "Communication service provider")
+
+
+' Relations:
+
+Rel(new_online_client, bank, "HTTPS: credit request")
+Rel(new_online_client, bank, "HTTPS: credit request with passport")
+
+Rel(offline_client, bank, "Credit request")
+
+Rel(online_client, bank, "HTTPS: credit request")
+Rel(bank, tele_operator, "SMS operation confirmation")
+Rel(tele_operator, online_client, "SMS operation confirmation")
+
+Rel(bank, tele_operator, "SMS success notification")
+Rel(tele_operator, new_online_client, "SMS invitation to the bank")
+Rel(tele_operator, offline_client, "SMS success notification")
+
+@enduml

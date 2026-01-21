@@ -11,11 +11,11 @@ top to bottom direction
 
 ' Actors & components:
 
-Person(new_online_client, "New online client", "New online client")
-Person(online_client, "Authorized online client", "Registered online client")
-Person(phone_client, "Telephone client", "Telephone client")
+Person(new_online_client, "New online client")
+Person(online_client, "Authorized online client")
+Person(phone_client, "Telephone client")
 
-System(bank, "Standard bank", "Standard bank")
+System(bank, "Standard bank")
 
 System_Ext(tele_operator, "Telecom operator", "Communication service provider")
 

@@ -11,10 +11,10 @@ top to bottom direction
 
 ' Actors & components:
 
-Person(phone_client, "Telephone client", "Telephone client")
-Person(partner_op, "Partner call center operator", "Partner call center operator")
+Person(phone_client, "Telephone client")
+Person(partner_op, "Partner call center operator")
 
-System(bank, "Standard bank", "Standard bank")
+System(bank, "Standard bank")
 System_Ext(partner_call_center_system, "Partner call center system", "Java & Postgresql")
 
 
