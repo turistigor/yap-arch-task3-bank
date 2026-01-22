@@ -1,0 +1,43 @@
+@startuml online_banking
+
+' Initial settings:
+
+title Online banking component diagram
+
+top to bottom direction
+
+!include ../lib/C4_Component.puml
+
+
+' Actors & components:
+
+Person(client, "Online client")
+
+Container_Boundary(on_bank, "Online banking system") {
+    Component(api_gateway, "API gateway", "REST API")
+    Component(monolith, "Monolith", ".Net")
+    Component(deposit_creator, "Deposit creator", ".Net")
+}
+
+ContainerDb(on_bank_db, "Online banking DB", "MS SQL")
+
+Container_Boundary(deposit_service, "Deposit service", "Java/C# & React & Oracle/MS SQL")
+
+Container_Boundary(sms_gate, "Sms gate", "REST API")
+
+
+' Relations:
+Rel(client, api_gateway, "Requests")
+
+Rel(api_gateway, monolith, "Request")
+BiRel(monolith, on_bank_db, "Data")
+Rel(api_gateway, deposit_creator, "Request")
+Rel(deposit_creator, monolith, "Auth, data, etc.")
+
+Rel(deposit_creator, sms_gate, "SMS operation confirmation")
+Rel(sms_gate, client, "SMS operation confirmation")
+
+Rel(deposit_creator, deposit_service, "Deposit creation request")
+
+
+@enduml

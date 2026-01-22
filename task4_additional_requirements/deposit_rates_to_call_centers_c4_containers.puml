@@ -1,0 +1,45 @@
+@startuml deposit_rates_to_call_center_containers
+
+' Initial settings:
+
+title Standard bank deposit rates passing to the call centers (containers)
+
+top to bottom direction
+
+!include ../lib/C4_Container.puml
+
+
+' Actors & components:
+
+Person(phone_client, "Telephone client")
+Person(partner_op, "Partner call center operator")
+
+Container_Boundary(bank, "Standard bank") {
+    Container(call_center, "Bank call center system", "REST API")
+    Container(deposit_service, "Deposit service", "Java/C# & React & Oracle/MS SQL")
+    ContainerQueue(async_tasks, "Async tasks queue", "Spring Batch/Hangfire")
+
+    Person(call_center_op, "Call center operator", "Call center operator")
+    Person(deposit_manager, "Deposit manager", "Back office")
+}
+
+System_Ext(sftp_server, "SFTP file server", "Deposit rates files")
+System_Ext(partner_call_center_system, "Partner call center system", "Java & Postgresql")
+
+
+' Relations:
+
+Rel(phone_client, call_center_op, "Deposit request")
+Rel(call_center_op, call_center, "Get client rates")
+Rel(call_center, deposit_service, "Get client rates")
+
+Rel(deposit_manager, deposit_service, "Save deposit rates")
+Rel(deposit_service, async_tasks, "Save deposit rates")
+Rel(async_tasks, sftp_server, "Save deposit rates")
+
+Rel(phone_client, partner_op, "Deposit request")
+Rel(partner_op, partner_call_center_system, "Get client rates")
+Rel(partner_call_center_system, sftp_server, "Get client rates")
+
+
+@enduml
