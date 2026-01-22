@@ -23,8 +23,8 @@ System_Ext(partner_call_center_system, "Partner call center system", "Java & Pos
 Rel(phone_client, bank, "Deposit request")
 
 Rel(phone_client, partner_op, "Deposit request")
-Rel(partner_op, partner_call_center_system, "Deposit rates")
-Rel(partner_call_center_system, bank, "Deposit rates files")
+Rel(partner_op, partner_call_center_system, "Get deposit rates")
+Rel(partner_call_center_system, bank, "Get deposit rates files")
 
 
 @enduml

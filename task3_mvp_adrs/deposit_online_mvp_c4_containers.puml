@@ -21,9 +21,11 @@ Container_Boundary(bank, "Standard bank") {
     Container(call_center, "Bank call center system", "REST API")
     Container(deposit_service, "Deposit service", "Java/C# & React & Oracle/MS SQL")
     Container(abs, "Auto banking system", "Delphi & Oracle")
+    Container(credit_systems, "Credit systems", "Pipeline, scoring & history")
     Container(sms_gate, "Sms gate", "REST API")
 
     Person(deposit_manager, "Deposit manager", "Back office")
+    Person(credit_manager, "Credit manager", "Back office")
     Person(call_center_op, "Call center operator", "Call center operator")
 }
 
@@ -37,9 +39,12 @@ Rel(site, deposit_service, "Get common deposit rates")
 Rel(deposit_service, deposit_manager, "New online client deposit req")
 Rel(deposit_manager, deposit_service, "Save deposit rates")
 Rel(deposit_manager, call_center, "Task: to call new client back")
-Rel(abs, deposit_manager, "Get rates data")
+Rel(credit_manager, deposit_manager, "Get rates data")
 Rel(call_center, call_center_op, "Task: to call new client back")
 Rel(call_center_op, new_online_client, "Confirmation call with an invitation to the bank")
+
+Rel(abs, credit_manager, "Get rates data")
+Rel(credit_systems, credit_manager, "Get rates data")
 
 Rel(online_client, on_bank, "HTTPS: deposit request")
 Rel(on_bank, deposit_service, "Online client deposit req")
